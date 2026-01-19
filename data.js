@@ -14,9 +14,9 @@ const translations = [
         ],
     },
     {
-        key: 'base_rate',
+        key: 'addit_accomm',
         data: [
-            { lang: 'EN', term: 'Base rate' },
+            { lang: 'EN', term: 'Additional accommodation' },
             { lang: 'FR', term: 'Taux de base' },
         ],
     },

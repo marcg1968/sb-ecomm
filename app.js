@@ -14,7 +14,7 @@ const main = () => {
     // console.log(10, data)
     let struct = {}
     Object.keys(data).forEach((key, i) => {
-        console.log(17, i, `${key}: ${typeof data[key]}`)
+        console.log(17, i, `key=${key}: ${typeof data[key]}`)
         if (typeof data[key] === 'number') return struct[key] = 0
         if (typeof data[key] === 'string') return struct[key] = ''
         if (typeof data[key] === 'object') {
@@ -24,19 +24,21 @@ const main = () => {
             // console.log(24, data[key])
             /* is it an arr of scalars or objects? */
             if (typeof data[key][0] === 'number' || typeof data[key][0] === 'string') {
-                struct[key].push('')
+                // struct[key].push('')
+                struct[key] = ['']
             }
             if (typeof data[key][0] === 'object') {
                 Object.keys(data[key][0]).forEach((key2, j) => {
-                    console.log(31, { struct })
-                    console.log(32, j, `${key2}`)
-                    if (typeof data[key][key2] === 'number') struct[key].push({ [key2]: 0 })
-                    if (typeof data[key][key2] === 'string') struct[key].push({ [key2]: '' })
+                    console.log(33, { struct })
+                    console.log(34, j, `key2=${key2} ${typeof data[key][0][key2]}`)
+                    if (typeof data[key][0][key2] === 'string') struct[key] = [ ...struct[key], { [key2]: `TEXT` } ]
+                    if (typeof data[key][0][key2] === 'number') struct[key] = [ ...struct[key], { [key2]: `DECIMAL` } ]
+
                 })
             }
         }
     })
-    console.log(99, struct)
+    console.log(42, JSON.stringify(struct, null, 2))
 }
 
 main()
