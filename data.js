@@ -14,10 +14,10 @@ const translations = [
         ],
     },
     {
-        key: 'addit_accomm',
+        key: 'addit_course',
         data: [
-            { lang: 'EN', term: 'Additional accommodation' },
-            { lang: 'FR', term: 'logement supplémentaire' },
+            { lang: 'EN', term: 'Additional courses' },
+            { lang: 'FR', term: 'cours supplémentaire' },
         ],
     },
     {
@@ -25,6 +25,27 @@ const translations = [
         data: [
             { lang: 'EN', term: 'Additional accommodation' },
             { lang: 'FR', term: 'logement supplémentaire' },
+        ],
+    },
+    {
+        key: 'special_meal',
+        data: [
+            { lang: 'EN', term: 'Special meal' },
+            { lang: 'FR', term: 'Repas spécial' },
+        ],
+    },
+    {
+        key: 'optional',
+        data: [
+            { lang: 'EN', term: 'optional' },
+            { lang: 'FR', term: 'Optionnel' },
+        ],
+    },
+    {
+        key: 'unaccomp_minor',
+        data: [
+            { lang: 'EN', term: 'Unaccompanied minor' },
+            { lang: 'FR', term: 'mineur nonaccompagné' },
         ],
     },
     {
@@ -36,6 +57,18 @@ const translations = [
     },
 ]
 
+/*
+LOGIC:
+- "is_mandatory: false" means OPTIONAL,
+- each element in the costs: [] must have "cost" key which is either a SCALAR or an ARRAY of the following
+  = cost: [
+        { unit: 'week', amt: 2, cost: 2410 },
+        { unit: 'week', amt: 3, cost: 2410 },
+        { unit: 'week', amt: 4, cost: 2410 },
+    ],
+- "costs_footnotes: []" at the top level can be referenced by position in the arr if nec,
+inside the element itself inside the "costs: []" arr, e.g. "costs_footnote: 0",
+*/
 export const data = [
     {
         _id: 1,
@@ -62,7 +95,7 @@ export const data = [
             {
                 is_mandatory: true,
                 name: 'base_rate',
-                cost_options: [
+                cost: [
                     { unit: 'week', amt: 2, cost: 2410 },
                     { unit: 'week', amt: 3, cost: 2410 },
                     { unit: 'week', amt: 4, cost: 2410 },
@@ -75,8 +108,14 @@ export const data = [
             },
             {
                 is_mandatory: false,
+                name: 'addit_course',
+                cost_on_request: true,
+            },
+            {
+                is_mandatory: false,
                 name: 'addit_accomm',
-                cost_options: [
+                cost_on_request: true,
+                cost: [
                     { unit: 'week', amt: 1, cost: 425 },
                     { unit: 'night', amt: 1, cost: 61 },
                 ],
@@ -99,13 +138,26 @@ export const data = [
             {
                 is_mandatory: false,
                 name: 'transfers',
-                cost_options: [
+                cost: [
                     { unit: 'SYD/Sydney', amt: .5, cost: 230 },
                     { unit: 'BNE/Byron Bay', amt: .5, cost: 325 },
                     { unit: 'BNE/Noosa', amt: .5, cost: 325 },
                     { unit: 'OOL/Byron Bay', amt: .5, cost: 180 },
                     { unit: 'OOL/Noosa', amt: .5, cost: 400 },
                 ],
+            },
+            {
+                is_mandatory: false,
+                name: 'special_meal',
+                cost: [
+                    { unit: 'week', amt: 1, cost: 425 },
+                    { unit: 'night', amt: 1, cost: 61 },
+                ],
+            },
+            {
+                is_mandatory: false,
+                name: 'unaccomp_minor',
+                cost: 150,
             },
         ],
     },
@@ -127,11 +179,14 @@ export const data = [
             { start: '2026-07-06', end: '2026-07-24' },
         ],
         age_range: [ 10, 13 ],
+        costs_footnotes: [
+            'Séjour minimum de 2 semaines / maximum de 3 semaines - Aucun logement - Séjour avec parents ou tuteurs'
+        ],
         costs: [
             {
                 is_mandatory: true,
                 name: 'base_rate',
-                cost_options: [
+                cost: [
                     { unit: 'week', amt: 2, cost: 1850 },
                     { unit: 'week', amt: 3, cost: 2500 },
                 ],
@@ -143,11 +198,13 @@ export const data = [
             },
             {
                 is_mandatory: false,
+                name: 'addit_course',
+                costs_footnote: 0,
+            },
+            {
+                is_mandatory: false,
                 name: 'addit_accomm',
-                cost_options: [
-                    { unit: 'week', amt: 1, cost: 425 },
-                    { unit: 'night', amt: 1, cost: 61 },
-                ],
+                costs_footnote: 0,
             },
             {
                 is_mandatory: true,
@@ -190,7 +247,7 @@ export const data = [
             {
                 is_mandatory: true,
                 name: 'base_rate',
-                cost_options: [
+                cost: [
                     { unit: 'week', amt: 2, cost: 2570 },
                     { unit: 'week', amt: 3, cost: 3855 },
                     { unit: 'week', amt: 4, cost: 5140 },
@@ -204,7 +261,7 @@ export const data = [
             {
                 is_mandatory: false,
                 name: 'addit_accomm',
-                cost_options: [
+                cost: [
                     { unit: 'week', amt: 1, cost: 465 },
                     { unit: 'night', amt: 1, cost: 67 },
                 ],
@@ -227,7 +284,7 @@ export const data = [
             {
                 is_mandatory: false,
                 name: 'special_meal',
-                cost_options: [
+                cost: [
                     { unit: 'week', amt: 1, cost: 90 },
                 ],
             },
@@ -261,7 +318,7 @@ export const data = [
             {
                 is_mandatory: true,
                 name: 'base_rate',
-                cost_options: [
+                cost: [
                     { unit: 'week', amt: 2, cost: 1850 },
                     { unit: 'week', amt: 3, cost: 2500 },
                 ],
@@ -274,7 +331,7 @@ export const data = [
             {
                 is_mandatory: false,
                 name: 'addit_accomm',
-                cost_options: [
+                cost: [
                     { unit: 'week', amt: 1, cost: 425 },
                     { unit: 'night', amt: 1, cost: 61 },
                 ],
