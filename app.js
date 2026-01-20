@@ -9,7 +9,7 @@ const generate_data_struct = () => {
     return data[0]
 }
 
-const main = () => {
+const main0 = () => {
     const data = generate_data_struct()
     // console.log(10, data)
     let struct = {}
@@ -41,4 +41,74 @@ const main = () => {
     console.log(42, JSON.stringify(struct, null, 2))
 }
 
+const isScalar = val => {
+    if (val === null) return null
+    const type = typeof val
+    return type !== 'object' && type !== 'function'
+}
+
+/* gather names of attributes with scalar value or array of scalars */
+const recurse = (struct, prefix = '') => {
+    console.log(51, { struct, prefix })
+    let collect = []
+    for (const key in struct) {}
+    Object.keys(struct).forEach((key, i) => {
+        const e = struct[key]
+        let is_scalar = isScalar(e),
+            hasNestedObj
+        if (!is_scalar && Array.isArray(e)) {
+            hasNestedObj = e.reduce((a, c, i) => {
+                // console.log(58, i, c, typeof c)
+                return !isScalar(c)
+            }, false)
+            console.log(61, { key, is_scalar, hasNestedObj })
+
+            /* recursive case */
+            if (hasNestedObj) {
+                // collect = [ ...collect, ...(recurse(e[0], `${key}[]`)) ]
+                collect = [ ...collect, ...(recurse(e[0], `${prefix ? `${prefix}.` : ''}${key}[]`)) ]
+            }
+        }
+
+        /* base case */
+        if (is_scalar || !hasNestedObj) {
+            // return collect = [ ...collect, `${prefix}.${key}` ]
+            // return collect = [ ...collect, [ ...prefix.split('.'), key ].join('.') ]
+            return collect = [ ...collect, prefix ? `${prefix}.${key}` : key ]
+        }
+    })
+    return collect
+}
+
+const main = () => {
+    const data = generate_data_struct()
+
+    let output = recurse(data)
+    console.log(77, output)
+}
+
 main()
+
+
+/*  */
+function flattenObject(obj, prefix = '') {
+  let flattened = {};
+
+  for (const key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      const currentKey = prefix ? `${prefix}.${key}` : key;
+      const value = obj[key];
+
+      // Base case: if the value is not an object (or is null/array), add it directly
+      if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+        flattened[currentKey] = value;
+      }
+      // Recursive case: if the value is an object, call the function recursively
+      else {
+        Object.assign(flattened, flattenObject(value, currentKey));
+      }
+    }
+  }
+
+  return flattened;
+}
