@@ -109,7 +109,7 @@ export const data = [
         ],
         detail: [
             'Anglais 08:30 - 12:00',
-            'Activité : 12:30 - 16:30',
+            'Activité: 12:30 - 16:30',
         ],
         periods: [
             { start: '2026-03-23', end: '2026-04-05' },
